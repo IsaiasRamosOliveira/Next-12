@@ -20,9 +20,7 @@ export const authService = {
                 tokenService.save(body.data.access_token);
             })
     },
-    async getSession(ctx) {
-        // const cookies = nookies.get(ctx);
-        // return cookies[ACCESS_TOKEN_KEY] || ''
+    async getSession(ctx = null) {
         const token = tokenService.get(ctx);
         return fetch(`${process.env.NEXT_PUBLIC_URL}/api/session`, {
             method: "GET",

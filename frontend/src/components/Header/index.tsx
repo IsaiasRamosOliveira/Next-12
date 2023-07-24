@@ -30,6 +30,12 @@ const Header = () => {
             <Link href="/">Home</Link>
           </li>
           <li>
+            <Link href="/secret">Secret</Link>
+          </li>
+          <li>
+            <Link href="/secret-static">Secret-Static</Link>
+          </li>
+          <li>
             <Link href="posts">Posts</Link>
           </li>
         </ul>
