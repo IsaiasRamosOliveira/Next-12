@@ -1,4 +1,6 @@
 import { tokenService } from "./tokenService";
+import nookies from "nookies";
+const ACCESS_TOKEN_KEY = "h234gjy23g4y32g4y1g3o122iuyg454343";
 
 export const authService = {
     async login({ username, password }) {
@@ -15,8 +17,25 @@ export const authService = {
             .then(async (res) => {
                 if (!res.ok) throw new Error("Usuário ou senha inválidos");
                 const body = await res.json();
-                console.log(body);
                 tokenService.save(body.data.access_token);
+            })
+    },
+    async getSession(ctx) {
+        // const cookies = nookies.get(ctx);
+        // return cookies[ACCESS_TOKEN_KEY] || ''
+        const token = tokenService.get(ctx);
+        return fetch(`${process.env.NEXT_PUBLIC_URL}/api/session`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then(res => {
+                if (!res.data) throw new Error("Não autorizado.")
+                return res.data
             })
     }
 }

@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import nookies from "nookies";
 import { authService } from "../services/auth/authService";
 
 const HomeStyled = styled.section`
