@@ -1,39 +1,71 @@
-import { tokenService } from "./tokenService";
-import nookies from "nookies";
-const ACCESS_TOKEN_KEY = "h234gjy23g4y32g4y1g3o122iuyg454343";
+import TokenService from "./TokenService";
 
-export const authService = {
-    async login({ username, password }) {
-        return fetch(`${process.env.NEXT_PUBLIC_URL}/api/login`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username,
-                password
-            })
+class AuthService {
+  async login(data: any) {
+    fetch('http://localhost:4000/api/login', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then(async (res) => {
+        // Tratando do refresh
+        const { refresh_token } = res.data
+        const response = await fetch("api/refresh", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ refresh_token })
         })
-            .then(async (res) => {
-                if (!res.ok) throw new Error("Usuário ou senha inválidos");
-                const body = await res.json();
-                tokenService.save(body.data.access_token);
-            })
-    },
-    async getSession(ctx = null) {
-        const token = tokenService.get(ctx);
-        return fetch(`${process.env.NEXT_PUBLIC_URL}/api/session`, {
+          .then(res => {
+            return res.json()
+          })
+
+        // Tratando do access token
+        TokenService.save(res.data.access_token, null);
+      })
+      .catch(err => {
+        throw new Error("Usuário não existe.")
+      })
+  }
+  async getSession(ctx: any) {
+    const token = TokenService.get(ctx)
+    return fetch('http://localhost:4000/api/session', {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Não autorizado.")
+        }
+        return res.json()
+      })
+      .then(res => {
+        return res
+      })
+      .catch(async (err) => {
+        if (err instanceof Error) {
+          const res = await fetch("/api/refresh", {
             method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(res => {
-                if (!res.data) throw new Error("Não autorizado.")
-                return res.data
-            })
-    }
+          })
+          .then((res) => {
+            return res.json()
+          })
+
+          console.log(res);
+          console.log('redirecionado');
+          window.location.pathname = "/"
+        }
+      })
+  }
 }
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default new AuthService();

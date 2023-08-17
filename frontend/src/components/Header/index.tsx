@@ -1,46 +1,42 @@
-"use client";
-import styled from "@emotion/styled";
 import Link from "next/link";
 import React from "react";
-
-const HeaderStyled = styled.header`
-  background: rgb(232, 67, 67);
-  padding: 20px;
-  a {
-    color: aliceblue;
-    font-weight: 600;
-  }
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-  }
-`;
-
+import { FaHome, FaUserAlt } from "react-icons/fa";
+import { RxCardStack } from "react-icons/rx";
+import { BsFillCartFill } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
+import { header, ul } from "./header.css";
 const Header = () => {
   return (
-    <HeaderStyled>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/secret">Secret</Link>
-          </li>
-          <li>
-            <Link href="/secret-static">Secret-Static</Link>
-          </li>
-          <li>
-            <Link href="posts">Posts</Link>
-          </li>
-        </ul>
-      </nav>
-    </HeaderStyled>
+    <header
+      className={header({
+        template: "red",
+      })}
+    >
+      <ul className={ul}>
+        <li>
+          <Link href="/">
+            <FaHome />
+          </Link>
+        </li>
+        <li>
+          <Link href="/posts">
+            <RxCardStack />
+          </Link>
+        </li>
+        <li>
+          <Link href="/logout">
+            <FiLogOut />
+          </Link>
+        </li>
+      </ul>
+      <ul className={ul}>
+        <li>
+          <Link href="/login">
+            <FaUserAlt />
+          </Link>
+        </li>
+      </ul>
+    </header>
   );
 };
 

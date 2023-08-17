@@ -1,47 +1,54 @@
-import styled from "@emotion/styled";
-import Link from "next/link";
+import { NextPageContext } from "next";
+import { v4 as uuid } from "uuid";
 import React from "react";
-const PostsStyled = styled.section`
-  .posts {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 22px;
-    .post {
-      width: 200px;
-      height: 240px;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
-      color: black;
-    }
-  }
-`;
+import Link from "next/link";
+import { postsStyled } from "../../global/style/posts.css";
+import BasicCard from "../../components/Card";
+import nookies from "nookies";
+import TokenService from "../../services/auth/TokenService";
+import AuthService from "../../services/auth/AuthService";
+import { withSession } from "../../services/auth/session";
 
-export async function getStaticProps(context) {
-  const res = await fetch("http://localhost:3002/posts");
-  const posts = await res.json();
+interface IPosts {
+  posts: [
+    {
+      id: string;
+      title: string;
+      description: string;
+      author: string;
+      date: string;
+    }
+  ];
+}
+
+export const getServerSideProps = withSession( async (ctx: any) => {
+  const postsJSON = await fetch("http://localhost:3008/posts");
+  const posts = await postsJSON.json();
   return {
     props: {
+      session: ctx.req.session,
       posts,
     },
   };
-}
+});
 
-const Posts = ({ posts }) => {
+const Posts = ({ posts }: IPosts) => {
   return (
-    <PostsStyled>
-      <h1>Posts</h1>
-      <div className="posts">
+    <section id="page">
+      <h1 id="title">Posts</h1>
+      <div className={postsStyled}>
         {posts.map((post) => (
-          <Link href={`posts/${post.id}`} className="post" key={post.id}>
-            <h3>{post.name}</h3>
-            <p>{post.description}</p>
+          <Link href={`/posts/${post.id}`} key={post.id}>
+            <BasicCard
+              title={post.title}
+              description={post.description}
+              author={post.author}
+              date={post.date}
+            />
           </Link>
         ))}
       </div>
-    </PostsStyled>
+    </section>
   );
 };
 

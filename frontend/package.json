@@ -1,5 +1,5 @@
 {
-  "name": "next12",
+  "name": "test",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,21 +7,36 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "data": "json-server ./src/json/posts.json -p 3002"
+    "db": "json-server src/json/posts.json -p 3008"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "next": "13.4.9",
+    "@mui/icons-material": "^5.14.3",
+    "@mui/material": "^5.14.4",
+    "@mui/styled-engine-sc": "^5.12.0",
+    "@vanilla-extract/css": "^1.12.0",
+    "@vanilla-extract/recipes": "^0.5.0",
+    "@vanilla-extract/sprinkles": "^1.6.1",
+    "next": "13.4.13",
+    "next-auth": "^4.23.0",
     "nookies": "^2.5.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-icons": "^4.10.1",
+    "styled-components": "^5.3.11",
+    "uuid": "^9.0.0",
+    "uuid4": "^2.0.3"
   },
   "devDependencies": {
-    "@types/node": "20.4.1",
-    "@types/react": "18.2.14",
-    "eslint": "8.44.0",
-    "eslint-config-next": "13.4.9",
-    "json-server": "^0.17.3"
+    "@types/node": "20.4.8",
+    "@types/react": "18.2.19",
+    "@types/react-dom": "18.2.7",
+    "@types/uuid": "^9.0.2",
+    "@vanilla-extract/next-plugin": "^2.2.1",
+    "eslint": "8.46.0",
+    "eslint-config-next": "13.4.13",
+    "json-server": "^0.17.3",
+    "typescript": "5.1.6"
   }
 }

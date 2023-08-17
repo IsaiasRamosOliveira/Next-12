@@ -1,23 +1,18 @@
-import styled from "@emotion/styled";
-import Header from "../components/Header";
-import GlobalStyle from "../theme/GlobalStyle";
+import type { AppProps } from 'next/app'
+import "../global/style/globalStyle.css"
+import Container from '../components/Container'
+import Header from '../components/Header'
+import Content from '../components/Content'
 
-const Container = styled.main`
-  padding: 26px;
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-`;
-
-export default function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <GlobalStyle />
+    <Container>
       <Header />
-      <Container>
+      <Content>
         <Component {...pageProps} />
-      </Container>
-    </>
-  );
+      </Content>
+    </Container>
+  )
 }
+
+export default MyApp
